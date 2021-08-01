@@ -60,12 +60,18 @@ const ToDo = (props) => {
     const AddForm = () => {
         const [formData, setFormData] = useState([]);
         const saveData = () => {
+            let date = null;
+            if (formData.endDate) {
+                 date = new Date(formData.endDate).toUTCString();
+            }
+
             callApi('http://localhost:8080/api/toDo')
                 .method('post')
                 .body({
                     "name": formData.todo,
                     "complete": false,
-                    "status": true
+                    "status": true,
+                    "end_date": date
                 })
                 .send((err, result) => {
                     if (!err) {
@@ -74,34 +80,54 @@ const ToDo = (props) => {
                     }
                 })
         };
-    
+
         const onChangeInput = (eventData) => {
-            setFormData({ [eventData.name]: eventData.value })
+            setFormData({ ...formData,[eventData.name]: eventData.value })
         };
         return (
             <div>
-                <InputText
-                    lableText="Add To Do"
-                    required={true}
-                    inputPlaceholder="Enter To Do"
-                    inputValue={formData.todo}
-                    inputName='todo'
-                    inputType="text"
-                    onChangeTxt={onChangeInput}
-                />
-                <button onClick={() => saveData()}>Add</button>
+                <div className={"inputSize floatLeft"}>
+                    <InputText
+                        lableText="Add To Do"
+                        required={true}
+                        inputPlaceholder="Enter To Do"
+                        inputValue={formData.todo}
+                        inputName='todo'
+                        inputType="text"
+                        onChangeTxt={onChangeInput}
+                    />
+                </div>
+                <div className={"inputSize floatLeft paddingLeft"}>
+                    <InputText
+                        lableText="End Date"
+                        required={true}
+                        inputPlaceholder="2021,07,01"
+                        inputValue={formData.endDate}
+                        inputName='endDate'
+                        inputType="text"
+                        onChangeTxt={onChangeInput}
+                    />
+                </div>
+
+                <div className={"defaultPadding"}>
+                    <button onClick={() => saveData()}>Add</button>
+                </div>
+
             </div>
+
+
+
         )
     }
-    
+
     return (
         <div className='todo'>
             <div className={"defaultPadding"}>
-                <AddForm {...props}/>
+                <AddForm {...props} />
             </div>
 
             {
-                props.data.length >0?(
+                props.data.length > 0 ? (
                     props.data.map((todo) => {
                         return (
                             <div>
@@ -115,7 +141,7 @@ const ToDo = (props) => {
                             </div>
                         )
                     })
-                ):(
+                ) : (
                     <p>You are to do items that are empty.</p>
                 )
             }
