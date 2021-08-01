@@ -24,7 +24,6 @@ export class ToDoController {
     @_SortObject() sortObject: object
   ): Promise<object> {
     return this.service.getCustom(toDoGetDto, {
-      created_at: 'DESC',
       ...sortObject
     });
   }

@@ -94,8 +94,6 @@ const ToDo = (props) => {
         )
     }
     
-
-    
     return (
         <div className='todo'>
             <div className={"defaultPadding"}>
@@ -103,19 +101,23 @@ const ToDo = (props) => {
             </div>
 
             {
-                props.data.map((todo) => {
-                    return (
-                        <div>
-                            <UICard
-                                elementStyle="defaultMarginTopBottom"
-                            >
-                                <div>
-                                    {todo.name} <DeleteIcon className={"floatRight"} onClick={() => remove(todo.id)} /><DoneIcon className={"floatRight"} onClick={() => done(todo.id)} />
-                                </div>
-                            </UICard>
-                        </div>
-                    )
-                })
+                props.data.length >0?(
+                    props.data.map((todo) => {
+                        return (
+                            <div>
+                                <UICard
+                                    elementStyle="defaultMarginTopBottom"
+                                >
+                                    <div>
+                                        {todo.name} <DeleteIcon className={"floatRight"} onClick={() => remove(todo.id)} /><DoneIcon className={"floatRight"} onClick={() => done(todo.id)} />
+                                    </div>
+                                </UICard>
+                            </div>
+                        )
+                    })
+                ):(
+                    <p>You are to do items that are empty.</p>
+                )
             }
         </div >
     )

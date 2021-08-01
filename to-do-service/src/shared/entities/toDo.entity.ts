@@ -11,4 +11,7 @@ export class ToDo extends MasterEntity {
 
   @Column({ type: 'tinyint', default: true })
   complete: boolean;
+
+  @Column({ type: 'timestamp', default: null })
+  end_date: Date;
 }

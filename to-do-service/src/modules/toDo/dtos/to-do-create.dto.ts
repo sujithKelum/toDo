@@ -27,4 +27,10 @@ export class ToDoCreateDto {
   @IsBoolean()
   readonly status: boolean;
 
+  @ApiProperty({
+    description: 'End Date',
+    type: Date
+  })
+  @IsNotEmpty()
+  end_date: Date;
 }

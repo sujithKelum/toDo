@@ -34,6 +34,12 @@ export class ToDoService extends BaseService<ToDo> {
       });
     }
 
+    if (!_isEmpty(toDoGetDto.complete)) {
+      query.andWhere('toDo.complete = :complete', {
+        complete: _toBoolean(toDoGetDto.complete)
+      });
+    }
+
     if (Object.keys(sortObject).length !== 0) {
       const sortingKeys = Object.keys(sortObject);
       sortingKeys.forEach((value, index) => {

@@ -2,7 +2,7 @@
 import { GETTASK } from './toDo.types';
 
 const INITIAL_STATE = {
-    data:{},
+    data:[],
 };
 
 

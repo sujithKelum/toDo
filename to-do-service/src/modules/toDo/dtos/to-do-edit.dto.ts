@@ -27,4 +27,11 @@ export class ToDoEditDto {
   @IsBoolean()
   readonly status: boolean;
 
+  @ApiProperty({
+    description: 'End Date',
+    type: Date
+  })
+  @IsOptional()
+  end_date: Date;
+
 }

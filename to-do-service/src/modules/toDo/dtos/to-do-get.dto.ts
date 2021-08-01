@@ -31,5 +31,12 @@ export class TodoGetDto extends SortByDto {
   @_IsBooleanCustom()
   readonly status: string;
 
+  @ApiProperty({
+    description: 'End Date',
+    required: false,
+    type: Date
+  })
+  @IsOptional()
+  readonly end_date: Date;
   
 }
