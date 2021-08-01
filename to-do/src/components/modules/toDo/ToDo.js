@@ -9,19 +9,22 @@ import { InputText } from '../../ui-components/elements/form/InputBox';
 import { UICard } from "../../ui-components/elements/UiCard"
 import DeleteIcon from '@material-ui/icons/Delete';
 import DoneIcon from '@material-ui/icons/Done';
+import FormatLineSpacingIcon from '@material-ui/icons/FormatLineSpacing';
+import SwapCallsIcon from '@material-ui/icons/SwapCalls';
 //import AddForm from './includes/AddForm';
 
 let data = [];
 
 const ToDo = (props) => {
+    const [order, setOrder] = useState(true);
 
     useEffect(() => {
         getInitialData();
     }, []);
 
 
-    const getInitialData = () => {
-        callApi('http://localhost:8080/api/toDo')
+    const getInitialData = (type = false) => {
+        callApi(`http://localhost:8080/api/toDo?sort_by=end_date|${order===true?('asc'):('desc')}&complete=${type}`)
             .method('get')
             .send((err, result) => {
                 if (!err) {
@@ -57,12 +60,17 @@ const ToDo = (props) => {
             })
     };
 
+    const changeOrder = () => {
+        setOrder(!order);
+        getInitialData();
+    }
+
     const AddForm = () => {
         const [formData, setFormData] = useState([]);
         const saveData = () => {
             let date = null;
             if (formData.endDate) {
-                 date = new Date(formData.endDate).toUTCString();
+                date = new Date(formData.endDate).toISOString();
             }
 
             callApi('http://localhost:8080/api/toDo')
@@ -82,7 +90,7 @@ const ToDo = (props) => {
         };
 
         const onChangeInput = (eventData) => {
-            setFormData({ ...formData,[eventData.name]: eventData.value })
+            setFormData({ ...formData, [eventData.name]: eventData.value })
         };
         return (
             <div>
@@ -125,17 +133,29 @@ const ToDo = (props) => {
             <div className={"defaultPadding"}>
                 <AddForm {...props} />
             </div>
+            <div className={"defaultPadding "}>
+                <p className={"floatLeft"}>To Do list</p>
+                <div>
+                    <FormatLineSpacingIcon onClick={() => changeOrder()}/>
+                    <DoneIcon onClick={() => getInitialData(true)}/>
+                    <SwapCallsIcon onClick={() => getInitialData(false)}/>
+                    
+                </div>
+
+            </div>
 
             {
                 props.data.length > 0 ? (
                     props.data.map((todo) => {
+                        let date = new Date(todo.end_date);
+
                         return (
                             <div>
                                 <UICard
                                     elementStyle="defaultMarginTopBottom"
                                 >
                                     <div>
-                                        {todo.name} <DeleteIcon className={"floatRight"} onClick={() => remove(todo.id)} /><DoneIcon className={"floatRight"} onClick={() => done(todo.id)} />
+                                        {todo.name + " " + "->" + date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate()} <DeleteIcon className={"floatRight"} onClick={() => remove(todo.id)} /><DoneIcon className={"floatRight"} onClick={() => done(todo.id)} />
                                     </div>
                                 </UICard>
                             </div>
