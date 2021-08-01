@@ -1,0 +1,17 @@
+.defaultInputWrapper{
+    margin-bottom: 5px !important;
+
+    .defaultInputLabel{
+
+        margin-bottom: 3px !important;
+        font-size: 12px !important;
+
+        span{
+            color: red !important;
+        }
+    }
+
+    .defaultInputText{
+        padding-bottom: 3px !important;
+    }
+}

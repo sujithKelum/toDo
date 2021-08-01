@@ -1,0 +1,52 @@
+version: '3.5'
+services:
+  to-do-mgt-service:
+    image: node:lts-alpine
+    container_name: to-do-app
+    ports:
+      - "3000"
+    volumes:
+      - .:/app/html
+      - ./nginx/logs/to-do-mgt-service/npm:/root/.npm/_logs
+    working_dir: /app/html 
+    command: npm run start:dev
+    networks:
+         - net_to_do_service
+    links:
+      - mysqltodo
+    depends_on:
+      - mysqltodo
+  proxy:
+    container_name: proxy_to_do_service
+    image: nginx:latest
+    ports:
+      - '8080:80'
+    volumes:
+      - ./nginx/conf:/etc/nginx/conf.d
+      - ./nginx/logs/nginx:/var/log/nginx
+    links:
+      - to-do-mgt-service
+    networks:
+         - net_to_do_service
+  mysqltodo:
+    image: mysql:8.0
+    container_name: to-do-db
+    cap_add:
+      - SYS_NICE
+    command:
+      --default-authentication-plugin=mysql_native_password
+    environment:
+        - MYSQL_DATABASE=${MYSQL_DATABASE}
+        - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+        - MYSQL_USER=${MYSQL_USER}
+        - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+    ports:
+      - '3322:3306'
+    networks:
+        - net_to_do_service      
+    volumes:
+        - ./mysql:/var/lib/mysql/:Z
+        - ./db:/home/db
+networks:
+  net_to_do_service:
+    driver: bridge

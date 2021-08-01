@@ -1,0 +1,24 @@
+
+# dependencies
+/node_modules
+/.pnp
+.pnp.js
+
+# testing
+/coverage
+
+# production
+#build
+/storybook-static
+# misc
+.DS_Store
+
+package-lock.json
+
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+#ide
+/.vscode
+/.idea 

@@ -1,0 +1,16 @@
+.defaultBGWrapper{
+    background-color: #eff3f6;
+    padding: 12px;
+}
+
+.defaultCardWrapper{   
+    box-shadow: 0 0 0 1px #e2e5e8 !important;
+    border-radius: 0px !important;
+    
+
+    .cardBodyWrapper{
+        padding: 15px;
+        float: left;
+        width: 100%;
+    }
+}
